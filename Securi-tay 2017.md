@@ -1,3 +1,6 @@
+This CTF can be found here: https://maze.pentest-challenge.co.uk/
+
+
 Booting up the VM gives you the IP of the target: 
 
 ![](https://github.com/d-l-y/CTF-walkthroughs/blob/master/images/VirtualBox_securictf_29_04_2017_09_02_56.png)
@@ -50,9 +53,25 @@ Spawn a proper shell.
 
 ![](https://github.com/d-l-y/CTF-walkthroughs/blob/master/images/VirtualBox_Kali-Linux-2016.1-vbox-amd64_30_04_2017_09_54_25.png)
 
-Now I can start looking around.
+Now that I have a shell on the target machine the first thing is to look around the environment. I started out looking for any interesting binaries or scripts that may have been created by a user that may perform interesting functions or have permissions set incorrectly. Listing the contents of the home directory for "ctfuser" revealed just that.
 
+![](https://github.com/d-l-y/CTF-walkthroughs/blob/master/images/VirtualBox_Kali-Linux-2016.1-vbox-amd64_30_04_2017_11_33_39.png)
 
+Look like mydbconnchecker is a binary that we have permission to execute. After running it the output shows that it is loging some information about the mysql database into syslog.
+
+![](https://github.com/d-l-y/CTF-walkthroughs/blob/master/images/VirtualBox_Kali-Linux-2016.1-vbox-amd64_30_04_2017_11_35_02.png)
+
+Reading syslog to see what is being logged shows that the username of `root` and with a password of `rorscahc` is being used to log into the `mysql` database on localhost `127.0.0.1`.
+
+Taking a look at the proccesses running shows MySQL is running as root..not a good idea.
+
+![](https://github.com/d-l-y/CTF-walkthroughs/blob/master/images/VirtualBox_Kali-Linux-2016.1-vbox-amd64_30_04_2017_11_42_33.png)
+
+A quick google search showed me I can run shell commands from MySQL https://www.electrictoolbox.com/shell-commands-mysql-command-line-client/ . So now I have MySQL running as root, credentials to log into MySQL and a way to execute a shell command from MySQL. Lets try it out.
+
+![](https://github.com/d-l-y/CTF-walkthroughs/blob/master/images/VirtualBox_Kali-Linux-2016.1-vbox-amd64_30_04_2017_11_44_26.png)
+
+And there we go.. I can now read generate a flag from the `/root` directory.
 
 
 
