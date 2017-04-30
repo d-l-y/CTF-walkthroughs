@@ -1,4 +1,4 @@
-#Securi-tay 2017
+# Securi-tay 2017
 
 This CTF can be found here: https://maze.pentest-challenge.co.uk/
 
